@@ -1,0 +1,159 @@
+"use client"
+import Link from 'next/link';
+import React, { useState } from 'react'
+import gg from "@/images/gg.webp";
+import fb from "@/images/facebook.png";
+import register from "@/images/register.png";
+import Image from 'next/image';
+import { Button } from '@/components/ui/button';
+import * as z from "zod"
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
+import jwt from 'jsonwebtoken';
+import signInUser from '@/actions/sign-in';
+import refreshToken from '@/actions/refresh-token';
+import getUserByEmail from '@/actions/get-user-by-email';
+import getRole from '@/actions/get-role';
+import useUser from '@/hooks/use-user';
+
+const formSchema = z.object({
+    email: z.string().min(1),
+    password: z.string().min(1)
+})
+
+type SignInForm = z.infer<typeof formSchema>
+
+const FormPage = () => {
+    const [check, setCheck] = useState(true);
+    const { addAllUser, addUser } = useUser();
+    const [loading, setLoading] = useState<boolean>(false);
+    const router = useRouter()
+    const form = useForm<SignInForm>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            email: "",
+            password: ""
+        }
+    })
+    const onSubmit = async (data: SignInForm) => {
+        try {
+            setLoading(true)
+            const dataResponse = await signInUser(data);
+            if (dataResponse?.status === 200) {
+                localStorage.setItem("access_token", dataResponse?.data?.access_token);
+                localStorage.setItem("refresh_token", dataResponse?.data?.refresh_token);
+                router.push("/");
+                const access_token = await refreshToken({ access_token: localStorage.getItem("refresh_token") });
+                const decoded = jwt.decode(access_token?.data?.access_token);
+                const emailToken = decoded?.sub;
+                if (typeof emailToken === 'string') {
+                    const getIdStore = await getUserByEmail({
+                        emailUser: emailToken
+                    })
+                    const role = await getRole(emailToken);
+                    const roleUser = role?.data;
+                    const id_store = getIdStore?.data?.store?.storeID;
+                    if (roleUser) {
+                        addAllUser({ role: roleUser, email: emailToken, id_store: id_store });
+                    }
+                } else {
+                    addUser("")
+                }
+            }
+        } catch (err) {
+            toast.error("Đăng nhập thất bại, vui lòng thử lại!")
+        } finally {
+            setLoading(false)
+        }
+    }
+    return (
+        <>
+            <div className='h-max w-full flex justify-center login'>
+                <div className='w-[800px] bg-white mt-5 rounded-[20px] relative flex overflow-hidden'>
+                    <div className='h-full w-[500px] flex justify-center text-sm'>
+                        <div className="form">
+                            <div className='w-full text-center text-xl font-bold text-[red]'>Đăng nhập</div>
+                            <Form {...form}>
+                                <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
+                                    <FormField
+                                        control={form.control}
+                                        name="email"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Email</FormLabel>
+
+                                                <FormControl>
+                                                    <Input
+                                                        disabled={loading}
+                                                        placeholder="Nhập email"
+                                                        {...field}
+                                                    />
+                                                </FormControl>
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <FormField
+                                        control={form.control}
+                                        name="password"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Mật khẩu</FormLabel>
+                                                <FormControl>
+                                                    <Input
+                                                        disabled={loading}
+                                                        placeholder="Nhập mật khẩu"
+                                                        {...field}
+                                                    />
+                                                </FormControl>
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <div className="flex-row">
+                                        <div className='flex items-center' onClick={() => setCheck(!check)}>
+                                            <input type="checkbox" checked={check} />
+                                            <label>Ghi nhớ
+                                            </label>
+                                        </div>
+                                        <span className="span">Quên mật khẩu?</span>
+                                    </div>
+                                    <Button variant={'destructive'} type='submit' className="w-full flex items-center justify-center"
+                                    >Đăng nhập</Button>
+                                    <p className="p">Bạn chưa có tài khoản?
+                                        <Link href={"/sign-up"}
+                                            className="span">Đăng ký</Link>
+                                    </p>
+                                    <p className="p line">Hoặc với</p>
+                                    <div className="flex-row">
+                                        <button className="btn google">
+                                            <Image width={32} height={32} src={gg}
+                                                alt='fblogo'
+                                            />
+                                            Google
+                                        </button>
+                                        <button className="btn apple">
+                                            <Image width={32} height={32} src={fb}
+                                                alt='fblogo'
+                                                className='w-8 h-8' />
+                                            Facebook
+                                        </button>
+                                    </div>
+                                </form>
+                            </Form>
+                        </div>
+                    </div>
+                    <div className='h-full w-[300px] bg-[#e0bdbd] flex items-center justify-center'>
+                        <Image height={203} src={register}
+                            alt=''
+                        />
+                    </div>
+                </div>
+            </div>
+        </>
+    )
+}
+
+export default FormPage

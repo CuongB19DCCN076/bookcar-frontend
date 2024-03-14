@@ -1,0 +1,39 @@
+"use client"
+import React from 'react'
+import { RefreshCcw } from 'lucide-react'
+import { useParams, useRouter } from 'next/navigation'
+
+import { Button } from '@/components/ui/button'
+import { Separator } from '@/components/ui/separator'
+import Heading from '@/components/ui/heading'
+import { DataTable } from '@/components/ui/data-table'
+import { OrderColumn, columns } from './column'
+
+interface OrderClientProps {
+    data: OrderColumn[],
+    fun: () => void;
+}
+
+const OrderClient: React.FC<OrderClientProps> = ({
+    data, fun
+}) => {
+    const params = useParams();
+    const router = useRouter();
+    return (
+        <>
+            <div className='flex items-center justify-between'>
+                <Heading
+                    title={`Đơn hàng (${data.length})`}
+                    description='Quản lý đơn hàng'
+                />
+                <div className='p-2 border rounded-sm hover:bg-slate-200 cursor-pointer active:bg-slate-300' onClick={() => fun()}>
+                    <RefreshCcw />
+                </div>
+            </div>
+            <Separator />
+            <DataTable keySearch={"name"} columns={columns} data={data} />
+        </>
+    )
+}
+
+export default OrderClient
