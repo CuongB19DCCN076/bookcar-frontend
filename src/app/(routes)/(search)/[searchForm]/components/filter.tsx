@@ -20,7 +20,7 @@ const Filter = () => {
             key: search
         }
         const url = queryString.stringifyUrl({
-            url: "http://localhost:3000/search/",
+            url: "https://book-car-eta.vercel.app/search/",
             query
         }, { skipNull: true })
         router.push(url);
@@ -33,7 +33,7 @@ const Filter = () => {
             start_time: searchFull.start_time
         }
         const url = queryString.stringifyUrl({
-            url: "http://localhost:3000/search/",
+            url: "https://book-car-eta.vercel.app/search/",
             query
         }, { skipNull: true })
         router.push(url);
