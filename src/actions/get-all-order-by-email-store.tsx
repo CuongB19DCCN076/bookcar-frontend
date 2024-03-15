@@ -1,10 +1,10 @@
-import axios from "axios";
+import axiosInstance from "@/lib/config-axios";
 
-const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/auth/get-all-order-by-email-user`;
+const API_URL = `/user/get-all-order-by-email-user`;
 
 const getAllOrderByEmailUser = async (idStore: string | undefined) => {
     try {
-        const res = await axios.get(`${API_URL}/${idStore}`);
+        const res = await axiosInstance.get(`${API_URL}/${idStore}`);
         if (res?.status === 200) {
             return res?.data;
         } else {

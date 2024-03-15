@@ -1,10 +1,10 @@
-import axios from "axios";
+import axiosInstance from "@/lib/config-axios";
 
-const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/auth/get-owner-name`;
+const API_URL = `/user/get-owner-name`;
 
 const getOwnerName = async () => {
     try {
-        const res = await axios.get(`${API_URL}`);
+        const res = await axiosInstance.get(`${API_URL}`);
         return res;
     } catch (err) {
         throw err

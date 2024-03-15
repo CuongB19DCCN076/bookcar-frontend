@@ -1,6 +1,6 @@
-import axios from "axios";
+import axiosInstance from "@/lib/config-axios";
 
-const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/auth/get-all-product-by-idstore`;
+const API_URL = `/seller/get-all-product-by-idstore`;
 
 interface getProductProps {
     id: Number
@@ -8,7 +8,7 @@ interface getProductProps {
 
 const getAllProductByIdStore = async (data: getProductProps) => {
     try {
-        const res = await axios.post(API_URL, data);
+        const res = await axiosInstance.post(API_URL, data);
         return res;
     } catch (err) {
         throw err

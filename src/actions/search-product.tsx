@@ -1,7 +1,7 @@
-import axios from "axios";
+import axiosInstance from "@/lib/config-axios";
 import queryString from "query-string"
 
-const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/auth/search`;
+const API_URL = `/user/search`;
 
 interface Query {
     key?: string | null,
@@ -21,7 +21,7 @@ const searchProducts = async (query: Query) => {
                 end_address: query.end_address,
             }
         }, { skipNull: true })
-        const res = await axios.get(url);
+        const res = await axiosInstance.get(url);
         return res?.data;
     } catch (e) {
 

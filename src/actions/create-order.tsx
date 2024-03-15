@@ -1,10 +1,10 @@
-import axios from "axios";
+import axiosInstance from "@/lib/config-axios";
 
-const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/auth/create-order`;
+const API_URL = `/user/create-order`;
 
 const createOrder = async (data: any) => {
     try {
-        const res = await axios.post(API_URL, data);
+        const res = await axiosInstance.post(API_URL, data);
         return res;
     } catch (err) {
         throw err
