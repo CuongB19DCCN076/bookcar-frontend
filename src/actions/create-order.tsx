@@ -1,6 +1,6 @@
 import axiosInstance from "@/lib/config-axios";
 
-const API_URL = `/user/create-order`;
+const API_URL = `/auth/create-order`;
 
 const createOrder = async (data: any) => {
     try {

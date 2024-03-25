@@ -1,12 +1,12 @@
 import axiosInstance from "@/lib/config-axios";
 import { ProductManage } from "@/types";
 
-const API_URL = `/user/get-all-product`;
+const API_URL = `/auth/get-all-product-pagi`;
 
 
-const getAllProduct = async (): Promise<ProductManage[]> => {
+const getAllProduct = async (page: string | null) => {
     try {
-        const res = await axiosInstance.get(API_URL);
+        const res = await axiosInstance.get(`${API_URL}/${page}`);
         return res?.data;
     } catch (err) {
         throw err

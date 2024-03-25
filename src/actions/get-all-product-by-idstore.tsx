@@ -1,6 +1,6 @@
 import axiosInstance from "@/lib/config-axios";
 
-const API_URL = `/seller/get-all-product-by-idstore`;
+const API_URL = `/auth/get-all-product-by-idstore`;
 
 interface getProductProps {
     id: Number

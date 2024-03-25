@@ -1,6 +1,6 @@
 import axiosInstance from "@/lib/config-axios";
 
-const API_URL = `/user/get-product`;
+const API_URL = `/auth/get-product`;
 
 const getProductById = async (id: string) => {
     try {

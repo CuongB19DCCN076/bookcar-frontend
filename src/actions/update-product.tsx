@@ -1,6 +1,6 @@
 import axiosInstance from "@/lib/config-axios";
 
-const API_URL = `/seller/update-product`;
+const API_URL = `/auth/update-product`;
 
 const putProductById = async (id: string | string[], data: any) => {
     try {

@@ -1,7 +1,7 @@
 import axiosInstance from "@/lib/config-axios";
 import queryString from "query-string"
 
-const API_URL = `/user/search`;
+const API_URL = `/auth/search`;
 
 interface Query {
     key?: string | null,

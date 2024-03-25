@@ -1,6 +1,6 @@
 import axiosInstance from "@/lib/config-axios";
 
-const API_URL = `/seller/delete-product`;
+const API_URL = `/auth/delete-product`;
 
 const deleteProductById = async (id: string | string[]) => {
     try {

@@ -1,6 +1,6 @@
 import axiosInstance from "@/lib/config-axios";
 
-const API_URL = `/seller/get-all-order-by-id-store`;
+const API_URL = `/auth/get-all-order-by-id-store`;
 
 const getAllOrderByIdStore = async (idStore: string | undefined) => {
     try {
