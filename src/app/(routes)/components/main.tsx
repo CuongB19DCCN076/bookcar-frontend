@@ -65,7 +65,7 @@ const Main = () => {
                             <PaginationPrevious href={`/?page=${pagination.page - 1}`} />
                         </PaginationItem>}
                         {
-                            Array(pagination.pagiNumber).fill(0).map((_, index) => {
+                            Array(pagination.pagiNumber ? pagination.pagiNumber : 0).fill(0).map((_, index) => {
                                 return (
                                     <PaginationItem key={index}>
                                         <PaginationLink href="#" isActive={pagination.page === index + 1}>{index + 1}</PaginationLink>

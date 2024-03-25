@@ -1,8 +1,8 @@
-import Main from "@/components/components/main";
-import Navbar from "@/components/components/navbar";
-import Notification from "@/components/components/notification";
 import Container from "@/components/ui/container";
 import { Suspense } from 'react'
+import Navbar from "./components/navbar";
+import Main from "./components/main";
+import Notification from "./components/notification";
 const PageMain = () => {
     return (
         <Container className="bg-[#F2F2F2]">
