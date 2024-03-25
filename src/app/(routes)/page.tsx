@@ -1,7 +1,8 @@
+import Main from "@/components/components/main";
+import Navbar from "@/components/components/navbar";
+import Notification from "@/components/components/notification";
 import Container from "@/components/ui/container";
-import Navbar from "./components/navbar";
-import Main from "./components/main";
-import Notification from "./components/notification";
+
 
 
 const Page = () => {

@@ -16,7 +16,6 @@ import getAllProduct from '@/actions/get-all-product'
 import { ProductManage } from '@/types'
 import { useSearchParams } from 'next/navigation'
 import Card from '@/components/ui/card'
-import { number } from 'zod'
 interface IPagination {
     pagiNumber: number,
     page: number
