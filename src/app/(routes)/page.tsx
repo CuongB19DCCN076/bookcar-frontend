@@ -2,7 +2,7 @@ import Main from "@/components/components/main";
 import Navbar from "@/components/components/navbar";
 import Notification from "@/components/components/notification";
 import Container from "@/components/ui/container";
-
+import { Suspense } from 'react'
 const PageMain = () => {
     return (
         <Container className="bg-[#F2F2F2]">
@@ -11,7 +11,9 @@ const PageMain = () => {
                     <Navbar />
                 </div>
                 <div className="lg:col-span-5 bg-[#F2F2F2] rounded-sm">
-                    <Main />
+                    <Suspense>
+                        <Main />
+                    </Suspense>
                 </div>
                 <div className="hidden lg:block lg:col-span-2 h-fit bg-white rounded-sm">
                     <Notification />
