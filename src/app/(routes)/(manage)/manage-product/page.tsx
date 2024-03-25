@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react'
 import ProductClient from './components/client'
 import useUser from '@/hooks/use-user'
-import { ProductManage } from "@/types";
 import getAllProductByIdStore from '@/actions/get-all-product-by-idstore'
 import { ProductColumn } from './components/column'
 

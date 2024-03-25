@@ -4,7 +4,6 @@ import { Trash } from 'lucide-react';
 import toast from "react-hot-toast";
 import React, { useState } from 'react'
 import { useForm } from "react-hook-form";
-import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
 
 import Heading from '@/components/ui/heading';

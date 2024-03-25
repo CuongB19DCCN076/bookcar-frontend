@@ -1,5 +1,4 @@
 import axiosInstance from "@/lib/config-axios";
-import { ProductManage } from "@/types";
 
 const API_URL = `/auth/get-all-product-pagi`;
 

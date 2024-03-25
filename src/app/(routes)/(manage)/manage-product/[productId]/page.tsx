@@ -1,6 +1,5 @@
 import getProductById from "@/actions/get-product-by-id"
-import ProductForm, { ProductFormValues } from "./components/product-form"
-import { useEffect, useState } from "react"
+import ProductForm from "./components/product-form"
 
 const ProductIdPage = async ({
     params

@@ -3,7 +3,6 @@ import React from 'react'
 import { RefreshCcw } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
 
-import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import Heading from '@/components/ui/heading'
 import { DataTable } from '@/components/ui/data-table'

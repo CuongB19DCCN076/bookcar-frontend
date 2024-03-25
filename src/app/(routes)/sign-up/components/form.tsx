@@ -5,7 +5,6 @@ import gg from "@/images/gg.webp";
 import fb from "@/images/facebook.png";
 import register from "@/images/register.png";
 import Image from 'next/image';
-import { Lock, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -13,17 +12,14 @@ import { Separator } from "@/components/ui/separator";
 import {
     Form,
     FormControl,
-    FormDescription,
     FormField,
     FormItem,
     FormLabel,
-    FormMessage
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Select } from "@radix-ui/react-select";
 import { SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import toast from "react-hot-toast";
-import axios from "axios";
 import Link from "next/link";
 import signUpUser from "@/actions/sign-up";
 

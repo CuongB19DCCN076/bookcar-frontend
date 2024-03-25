@@ -1,12 +1,9 @@
-import axios from "axios";
 import { useState } from "react"
 import toast from "react-hot-toast"
 import { useParams, useRouter } from "next/navigation"
 import {
-    Copy,
     Edit,
     EyeOff,
-    MapPin,
     MoreHorizontal,
     Trash
 } from "lucide-react"

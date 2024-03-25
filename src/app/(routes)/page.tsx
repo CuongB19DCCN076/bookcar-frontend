@@ -3,9 +3,7 @@ import Navbar from "@/components/components/navbar";
 import Notification from "@/components/components/notification";
 import Container from "@/components/ui/container";
 
-
-
-const Page = () => {
+const PageMain = () => {
     return (
         <Container className="bg-[#F2F2F2]">
             <div className="lg:grid lg:grid-cols-9 lg:gap-x-8 pt-5">
@@ -23,4 +21,4 @@ const Page = () => {
     )
 }
 
-export default Page
+export default PageMain
