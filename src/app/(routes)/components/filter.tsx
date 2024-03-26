@@ -21,7 +21,7 @@ const Filter = () => {
             key: search
         }
         const url = queryString.stringifyUrl({
-            url: "https://book-car-eta.vercel.app/search/",
+            url: "https://bookcar-sooty.vercel.app/search/",
             query
         }, { skipNull: true })
         router.push(url);
