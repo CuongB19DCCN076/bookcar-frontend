@@ -1,8 +1,8 @@
 import Container from "@/components/ui/container";
 import { Suspense } from 'react'
 import Navbar from "./components/navbar";
-import Main from "./components/main";
 import Notification from "./components/notification";
+import MainPage from "./components/main";
 const PageMain = () => {
     return (
         <Container className="bg-[#F2F2F2]">
@@ -12,7 +12,7 @@ const PageMain = () => {
                 </div>
                 <div className="lg:col-span-5 bg-[#F2F2F2] rounded-sm">
                     <Suspense>
-                        <Main />
+                        <MainPage />
                     </Suspense>
                 </div>
                 <div className="hidden lg:block lg:col-span-2 h-fit bg-white rounded-sm">

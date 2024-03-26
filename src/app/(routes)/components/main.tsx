@@ -10,7 +10,7 @@ import {
     PaginationPrevious
 } from '@/components/ui/pagination'
 import Filter from './filter'
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import useUser from '@/hooks/use-user'
 import getAllProduct from '@/actions/get-all-product'
 import { ProductManage } from '@/types'
@@ -86,4 +86,12 @@ const Main = () => {
     )
 }
 
-export default Main
+const MainPage = () => {
+    return (
+        <Suspense>
+            <Main />
+        </Suspense>
+    )
+}
+
+export default MainPage;
