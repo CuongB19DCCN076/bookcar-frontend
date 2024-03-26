@@ -68,7 +68,7 @@ const Main = () => {
                             Array(pagination.pagiNumber ? pagination.pagiNumber : 0).fill(0).map((_, index) => {
                                 return (
                                     <PaginationItem key={index}>
-                                        <PaginationLink href="#" isActive={pagination.page === index + 1}>{index + 1}</PaginationLink>
+                                        <PaginationLink href={`/?page=${index + 1}`} isActive={pagination.page === index + 1}>{index + 1}</PaginationLink>
                                     </PaginationItem>
                                 )
                             })
