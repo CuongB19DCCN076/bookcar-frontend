@@ -16,6 +16,7 @@ import getAllProduct from '@/actions/get-all-product'
 import { ProductManage } from '@/types'
 import { useSearchParams } from 'next/navigation'
 import Card from '@/components/ui/card'
+import SkeletonCard from '@/components/ui/skeleton-card'
 interface IPagination {
     pagiNumber: number,
     page: number
@@ -54,6 +55,9 @@ const Main = () => {
                 Tất cả vé
             </div>
             <div className='my-3'>
+                {!products && Array(10).fill(0).map((_, index) => (
+                    <SkeletonCard key={index} />
+                ))}
                 {
                     products && products?.map((item) => (
                         <Card key={item?.productID} product={item} />

@@ -94,7 +94,7 @@ const Card: React.FC<{ product: ProductManage }> = ({ product }) => {
                                                     <div className='text-xl font-medium text-center w-full pb-4'>
                                                         Thông báo
                                                     </div>
-                                                    <ItemNotification />
+                                                    <ItemNotification name={"Nhà xe Hương Huyền"} effectiveness={true} title={"Thay đổi lịch trình"} content={"Nhà xe thay đổi lịch trình từ 15/4"} updateAt={"20:00 20/3/2024"} />
                                                 </div>
                                             )}
                                         </Menu.Item>

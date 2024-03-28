@@ -8,6 +8,7 @@ import useUser from '@/hooks/use-user'
 import { ProductManage } from '@/types'
 import { useSearchParams } from 'next/navigation'
 import searchProducts from '@/actions/search-product'
+import SkeletonCard from '@/components/ui/skeleton-card'
 const Main = () => {
     const { email, addUser } = useUser();
     const [products, setProducts] = useState<ProductManage[]>();
@@ -30,6 +31,9 @@ const Main = () => {
                 Tất cả vé
             </div>
             <div className='my-3'>
+                {!products && Array(3).fill(0).map((_, index) => (
+                    <SkeletonCard key={index} />
+                ))}
                 {
                     products && products.map((item) => (
                         <Card key={item?.productID} product={item} />

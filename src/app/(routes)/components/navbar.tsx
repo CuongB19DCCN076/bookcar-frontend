@@ -1,7 +1,7 @@
 "use client"
 import getOwnerName from "@/actions/get-owner-name";
 import { useEffect, useState } from "react";
-
+import Skeleton from 'react-loading-skeleton'
 
 
 const Navbar: React.FC = () => {
@@ -33,6 +33,11 @@ const Navbar: React.FC = () => {
                     </div>
                 )
             })}
+            {data.length === 0 && Array(10).fill(0).map((_, index) => (
+                <div className="font-medium text-[green] p-3 border-b mb-1" key={index}>
+                    <Skeleton height={20} />
+                </div>
+            ))}
         </div>
     )
 }

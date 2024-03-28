@@ -6,7 +6,7 @@ import Navbar from "@/components/navbar/navbar";
 import Footer from "@/components/footer";
 import { Toaster } from "react-hot-toast";
 import ModalProvider from "@/providers/modal-provider";
-
+import 'react-loading-skeleton/dist/skeleton.css'
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {

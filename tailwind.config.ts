@@ -67,10 +67,16 @@ const config = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        "hourglass": {
+          '0%': { transform: 'rotate(0)', animationTimingFunction: 'cubic-bezier(0.55, 0.055, 0.675, 0.19)' },
+          '50%': { transform: 'rotate(900deg)', animationTimingFunction: 'cubic-bezier(0.215, 0.61, 0.355, 1)' },
+          '100%': { transform: 'rotate(1800deg)' },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        'hourglass': 'hourglass 1.2s infinite',
       },
     },
   },
