@@ -112,10 +112,8 @@ const MainNav = () => {
                             <Menu >
                                 <Menu.Button
                                     className={cn(
-                                        "flex relative justify-between p-4 text-lg font-medium w-full text-start items-center", "hover:text-white hover:bg-violet-500",
-                                        item.active && "border-y-4 border-[red]",
-                                        item.active && "after:absolute after:right-0 after:w-1 after:h-2 after:bottom-0 after:bg-[red]",
-                                        item.active && "before:absolute before:left-0 before:top-0 before:h-2 before:w-1 before:bg-[red]"
+                                        "flex relative justify-between p-4 text-lg font-medium w-full text-start items-center", "hover:text-green-600 hover:scale-125",
+                                        item.active && "text-green-600",
                                     )}>
                                     {item.name}
                                     <ChevronDownIcon
@@ -172,10 +170,8 @@ const MainNav = () => {
                     <Link
                         href={item.href}
                         className={cn(
-                            "block p-4 text-lg font-medium relative", "hover:text-white hover:bg-violet-500",
-                            item.active && "border-y-4 border-[red]",
-                            item.active && "after:absolute after:right-0 after:w-1 after:h-2 after:bottom-0 after:bg-[red]",
-                            item.active && "before:absolute before:left-0 before:top-0 before:h-2 before:w-1 before:bg-[red]"
+                            "block p-4 text-lg font-medium relative", "hover:text-green-600 hover:scale-125",
+                            item.active && "text-green-600",
                         )}
                         key={item.name}>
                         {item.name}

@@ -2,7 +2,7 @@
 import * as z from "zod";
 import { Trash } from 'lucide-react';
 import toast from "react-hot-toast";
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { useForm } from "react-hook-form";
 import { useParams, useRouter } from "next/navigation";
 
@@ -83,48 +83,80 @@ const ProductForm = ({ initialData }: {
             status: "Hiện"
         }
     })
-    const onSubmit = async (data: ProductFormValues) => {
+    const onSubmit = useCallback(async (data: ProductFormValues) => {
+        setLoading(true);
         try {
-            const access_token = localStorage.getItem("access_token");
-            setLoading(true);
             if (initialData) {
                 await putProductById(params?.productId, { ...data, emailUser: email });
             } else {
-                await createProduct(
-                    { ...data, emailUser: email }
-                    // , {
-                    //     headers: {
-                    //         Authorization: `Bearer ${localStorage.getItem("access_token")}`
-                    //     }
-                    // }
-                );
+                await createProduct({ ...data, emailUser: email });
             }
-            route.refresh();
-            // route.push(`/${params.storeId}/colors`)
+            route.push('/');
             toast.success(toastMessage);
         } catch (error) {
-            toast.error("Something went wrong.");
-            console.log(error)
+            toast.error('Có lỗi xảy ra.');
+            console.error(error);
         } finally {
             setLoading(false);
         }
-    }
+    }, [email, initialData, params?.productId, route, toastMessage]);
 
-    const onDelete = async () => {
+    const onDelete = useCallback(async () => {
+        setLoading(true);
         try {
-            setLoading(true);
             await deleteProductById(params?.productId);
             route.refresh();
-            route.push("/")
-            toast.success("Xóa thành công sản phẩm");
+            route.push('/');
+            toast.success('Product deleted.');
         } catch (error) {
-            toast.error("Trước tiên hãy đảm bảo bạn đã xóa tất cả sản phẩm và danh mục");
-            console.log(error)
+            toast.error('An error occurred.');
+            console.error(error);
         } finally {
             setLoading(false);
             setOpen(false);
         }
-    }
+    }, [params?.productId, route]);
+    const createInputField = (
+        name: 'name' | 'start_address' | 'end_address' | 'start_time' | 'end_time' | 'license_plates' | 'phone_number' | 'phone_number2' | 'description' | 'policy' | 'price' | 'remain_seat' | 'type' | 'utilities' | 'status',
+        label: string,
+        type = "text",
+        placeholder = "",
+        additionalProps = {}
+    ) => (
+        <FormField
+            control={form.control}
+            name={name}
+            render={({ field }) => (
+                <FormItem>
+                    <FormLabel>{label}</FormLabel>
+                    <FormControl>
+                        <Input
+                            disabled={loading}
+                            type={type}
+                            placeholder={placeholder}
+                            {...field}
+                            {...additionalProps}
+                        />
+                    </FormControl>
+                    <FormMessage />
+                </FormItem>
+            )}
+        />
+    );
+    const createTiptapField = (name: 'policy' | 'utilities' | 'description', label = '', description = '') => (
+        <FormField control={form.control} name={name} render={({ field }) => (
+            <FormItem>
+                <FormLabel>{label}</FormLabel>
+                <FormControl>
+                    <div className="flex items-center gap-x-4 w-full">
+                        <Tiptap description={description !== '' ? text : field.value} onChange={field.onChange} />
+                    </div>
+                </FormControl>
+                <FormMessage />
+            </FormItem>
+        )} />
+    );
+
     return (
         <>
             <AlertModal
@@ -172,264 +204,23 @@ const ProductForm = ({ initialData }: {
                         )}
                     />
                     <div className="grid grid-cols-3 gap-8">
-                        <FormField
-                            control={form.control}
-                            name="name"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Tên vé</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            disabled={loading}
-                                            placeholder="Tên vé..."
-                                            {...field}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="start_address"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Địa điểm bắt đầu</FormLabel>
-                                    <FormControl>
-                                        <div className="flex items-center gap-x-4">
-                                            <Input
-                                                disabled={loading}
-                                                placeholder="Địa điểm bắt đầu..."
-                                                {...field}
-                                            />
-                                        </div>
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="end_address"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Địa điểm kết thúc</FormLabel>
-                                    <FormControl>
-                                        <div className="flex items-center gap-x-4">
-                                            <Input
-                                                disabled={loading}
-                                                placeholder="Địa điểm kết thúc..."
-                                                {...field}
-                                            />
-                                        </div>
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="start_time"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Thời gian bắt đầu</FormLabel>
-                                    <FormControl>
-                                        <div className="flex items-center gap-x-4">
-                                            <Input
-                                                disabled={loading}
-                                                type="time"
-                                                placeholder="Thời gian bắt đầu..."
-                                                {...field}
-                                            />
-                                        </div>
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="end_time"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Thời gian kết thúc</FormLabel>
-                                    <FormControl>
-                                        <div className="flex items-center gap-x-4">
-                                            <Input
-                                                disabled={loading}
-                                                type="time"
-                                                placeholder="Thời gian kết thúc..."
-                                                {...field}
-                                            />
-                                        </div>
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="remain_seat"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Số ghế trống</FormLabel>
-                                    <FormControl>
-                                        <div className="flex items-center gap-x-4">
-                                            <Input
-                                                disabled={loading}
-                                                placeholder="Nhập số trống..."
-                                                {...field}
-                                            />
-                                        </div>
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="license_plates"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Biển số xe</FormLabel>
-                                    <FormControl>
-                                        <div className="flex items-center gap-x-4">
-                                            <Input
-                                                disabled={loading}
-                                                placeholder="Nhập biển số xe..."
-                                                {...field}
-                                            />
-                                        </div>
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="type"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Kiểu xe</FormLabel>
-                                    <FormControl>
-                                        <div className="flex items-center gap-x-4">
-                                            <Input
-                                                disabled={loading}
-                                                placeholder="Nhập kiểu xe..."
-                                                {...field}
-                                            />
-                                        </div>
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="price"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Giá vé</FormLabel>
-                                    <FormControl>
-                                        <div className="flex items-center gap-x-4">
-                                            <Input
-                                                type="number"
-                                                disabled={loading}
-                                                placeholder="Nhập giá vé..."
-                                                {...field}
-                                            />
-                                        </div>
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+                        {createInputField("name", "Tên vé", "text", "Tên vé...")}
+                        {createInputField("start_address", "Địa điểm bắt đầu", "text", "Địa điểm bắt đầu...")}
+                        {createInputField("end_address", "Địa điểm kết thúc", "text", "Địa điểm kết thúc...")}
+                        {createInputField("start_time", "Thời gian bắt đầu", "time", "Thời gian bắt đầu...")}
+                        {createInputField("end_time", "Thời gian kết thúc", "time", "Thời gian kết thúc...")}
+                        {createInputField("remain_seat", "Số ghế trống", "text", "Nhập số trống...")}
+                        {createInputField("license_plates", "Biển số xe", "text", "Nhập biển số xe...")}
+                        {createInputField("type", "Kiểu xe", "text", "Nhập kiểu xe...")}
+                        {createInputField("price", "Giá vé", "number", "Nhập giá vé...")}
                         <div className="col-span-3 grid grid-cols-3 gap-8">
-                            <FormField
-                                control={form.control}
-                                name="phone_number"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Số điện thoại 1</FormLabel>
-                                        <FormControl>
-                                            <div className="flex items-center gap-x-4">
-                                                <Input
-                                                    disabled={loading}
-                                                    placeholder="Nhập số điện thoại 1"
-                                                    {...field}
-                                                />
-                                            </div>
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="phone_number2"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Số điện thoại 2</FormLabel>
-                                        <FormControl>
-                                            <div className="flex items-center gap-x-4">
-                                                <Input
-                                                    disabled={loading}
-                                                    placeholder="Nhập số điện thoại 2"
-                                                    {...field}
-                                                />
-                                            </div>
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
+                            {createInputField("phone_number", "Số điện thoại 1", "text", "Nhập số điện thoại 1")}
+                            {createInputField("phone_number2", "Số điện thoại 2", "text", "Nhập số điện thoại 2")}
                         </div>
                         <div className="col-span-3 grid grid-cols-3 gap-x-4">
-                            <FormField
-                                control={form.control}
-                                name="policy"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Chính sách</FormLabel>
-                                        <FormControl>
-                                            <div className="flex items-center gap-x-4 w-full">
-                                                <Tiptap description={!initialData ? text : field.value} onChange={field.onChange} />
-                                            </div>
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="utilities"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Tiện ích chuyến xe</FormLabel>
-                                        <FormControl>
-                                            <div className="flex items-center gap-x-4 w-full">
-                                                <Tiptap description={field.value} onChange={field.onChange} />
-                                            </div>
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="description"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Mô tả</FormLabel>
-                                        <FormControl>
-                                            <div className="flex items-center gap-x-4 w-full">
-                                                <Tiptap description={field.value} onChange={field.onChange} />
-                                            </div>
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
+                            {createTiptapField("policy", "Chính sách", "1111")}
+                            {createTiptapField("utilities", "Tiện ích chuyến xe")}
+                            {createTiptapField("description", "Mô tả")}
                         </div>
                     </div>
                     <Button

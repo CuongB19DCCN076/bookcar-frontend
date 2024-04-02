@@ -57,7 +57,7 @@ const MobileSidebar = () => {
     const menu = ["Tôi", "Gửi hàng", "Thuê xe", "Giới thiệu", "Tin tức"]
     const { isOpen, handleClose } = useSidebarStore();
     return (
-        <Dialog open={isOpen} as="div" className={"relative z-40 lg:hidden"} onClose={handleClose}>
+        <Dialog open={isOpen} as="div" className={"relative z-40 sm:hidden"} onClose={handleClose}>
             {/* Background */}
             <div className="fixed inset-0 bg-black bg-opacity-25">
                 {/* Dialog positon */}

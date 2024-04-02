@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import * as z from "zod"
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
@@ -70,6 +70,33 @@ const FormPage = () => {
             setLoading(false)
         }
     }
+    const createInputField = (
+        name: 'password' | 'email',
+        label: string,
+        type = "text",
+        placeholder = "",
+        additionalProps = {}
+    ) => (
+        <FormField
+            control={form.control}
+            name={name}
+            render={({ field }) => (
+                <FormItem>
+                    <FormLabel>{label}</FormLabel>
+                    <FormControl>
+                        <Input
+                            disabled={loading}
+                            type={type}
+                            placeholder={placeholder}
+                            {...field}
+                            {...additionalProps}
+                        />
+                    </FormControl>
+                    <FormMessage />
+                </FormItem>
+            )}
+        />
+    );
     return (
         <>
             <div className='h-max w-full flex justify-center login'>
@@ -79,39 +106,8 @@ const FormPage = () => {
                             <div className='w-full text-center text-xl font-bold text-[red]'>Đăng nhập</div>
                             <Form {...form}>
                                 <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
-                                    <FormField
-                                        control={form.control}
-                                        name="email"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>Email</FormLabel>
-
-                                                <FormControl>
-                                                    <Input
-                                                        disabled={loading}
-                                                        placeholder="Nhập email"
-                                                        {...field}
-                                                    />
-                                                </FormControl>
-                                            </FormItem>
-                                        )}
-                                    />
-                                    <FormField
-                                        control={form.control}
-                                        name="password"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>Mật khẩu</FormLabel>
-                                                <FormControl>
-                                                    <Input
-                                                        disabled={loading}
-                                                        placeholder="Nhập mật khẩu"
-                                                        {...field}
-                                                    />
-                                                </FormControl>
-                                            </FormItem>
-                                        )}
-                                    />
+                                    {createInputField("email", "Email", "email", "Nhập email")}
+                                    {createInputField("password", "Mật khẩu", "text", "Nhập mật khẩu")}
                                     <div className="flex-row">
                                         <div className='flex items-center' onClick={() => setCheck(!check)}>
                                             <input type="checkbox" checked={check} />

@@ -7,6 +7,7 @@ import Footer from "@/components/footer";
 import { Toaster } from "react-hot-toast";
 import ModalProvider from "@/providers/modal-provider";
 import 'react-loading-skeleton/dist/skeleton.css'
+import DialogflowMessenger from "@/components/dialogMessage";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -27,6 +28,7 @@ export default function RootLayout({
         <ModalProvider />
         {children}
         <div className="p-3 bg-[#f4f4f4]"></div>
+        <DialogflowMessenger />
         <Footer />
       </body>
     </html>

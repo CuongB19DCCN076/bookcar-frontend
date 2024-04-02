@@ -15,6 +15,7 @@ import {
     FormField,
     FormItem,
     FormLabel,
+    FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Select } from "@radix-ui/react-select";
@@ -56,6 +57,33 @@ const FormSignUp = () => {
             setLoading(false);
         }
     }
+    const createInputField = (
+        name: 'username' | 'password' | 'email' | 'phone_number',
+        label: string,
+        type = "text",
+        placeholder = "",
+        additionalProps = {}
+    ) => (
+        <FormField
+            control={form.control}
+            name={name}
+            render={({ field }) => (
+                <FormItem>
+                    <FormLabel>{label}</FormLabel>
+                    <FormControl>
+                        <Input
+                            disabled={loading}
+                            type={type}
+                            placeholder={placeholder}
+                            {...field}
+                            {...additionalProps}
+                        />
+                    </FormControl>
+                    <FormMessage />
+                </FormItem>
+            )}
+        />
+    );
     return (
         <>
             <div className='h-max w-full flex justify-center login'>
@@ -70,70 +98,10 @@ const FormSignUp = () => {
                                     onSubmit={form.handleSubmit(onHandleSubmit)}
                                     className="space-y-4 w-full"
                                 >
-                                    <FormField
-                                        control={form.control}
-                                        name="username"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>Tên người dùng</FormLabel>
-                                                <FormControl>
-                                                    <Input
-                                                        disabled={loading}
-                                                        placeholder="Nhập tên người dùng"
-                                                        {...field}
-                                                    />
-                                                </FormControl>
-                                            </FormItem>
-                                        )}
-                                    />
-                                    <FormField
-                                        control={form.control}
-                                        name="email"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>Email</FormLabel>
-                                                <FormControl>
-                                                    <Input
-                                                        disabled={loading}
-                                                        placeholder="Nhập email"
-                                                        {...field}
-                                                    />
-                                                </FormControl>
-                                            </FormItem>
-                                        )}
-                                    />
-                                    <FormField
-                                        control={form.control}
-                                        name="password"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>Mật khẩu</FormLabel>
-                                                <FormControl>
-                                                    <Input
-                                                        disabled={loading}
-                                                        placeholder="Nhập mật khẩu"
-                                                        {...field}
-                                                    />
-                                                </FormControl>
-                                            </FormItem>
-                                        )}
-                                    />
-                                    <FormField
-                                        control={form.control}
-                                        name="phone_number"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>Số điện thoại</FormLabel>
-                                                <FormControl>
-                                                    <Input
-                                                        disabled={loading}
-                                                        placeholder="Nhập số điện thoại"
-                                                        {...field}
-                                                    />
-                                                </FormControl>
-                                            </FormItem>
-                                        )}
-                                    />
+                                    {createInputField("username", "Tên người dùng", "text", "Nhập tên người dùng")}
+                                    {createInputField("email", "Email", "email", "Nhập email")}
+                                    {createInputField("password", "Mật khẩu", "text", "Nhập mật khẩu")}
+                                    {createInputField("phone_number", "Số điện thoại", "text", "Nhập số điện thoại")}
                                     <FormField
                                         control={form.control}
                                         name="role"

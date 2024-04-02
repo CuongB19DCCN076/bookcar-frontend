@@ -3,6 +3,7 @@ import { Suspense } from 'react'
 import Navbar from "./components/navbar";
 import Notification from "./components/notification";
 import MainPage from "./components/main";
+import DialogflowMessenger from "@/components/dialogMessage";
 const PageMain = () => {
     return (
         <Container className="bg-[#F2F2F2]">
@@ -19,6 +20,7 @@ const PageMain = () => {
                     <Notification />
                 </div>
             </div>
+            <DialogflowMessenger />
         </Container>
     )
 }

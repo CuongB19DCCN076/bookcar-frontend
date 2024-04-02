@@ -5,14 +5,14 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import useNotificationModal from "@/hooks/use-notification-modal";
 import * as z from "zod"
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Separator } from "@radix-ui/react-separator";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form";
-import { useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 
-const NoticeForm = z.object({
+const noticeFormSchema = z.object({
     id: z.string().min(1),
     title: z.string().min(1),
     context: z.string().min(1),
@@ -20,33 +20,37 @@ const NoticeForm = z.object({
     createAt: z.string().min(1),
     updateAt: z.string().min(1),
     status: z.string().min(1),
-})
+});
 
-type NoticeFormValue = z.infer<typeof NoticeForm>
+type NoticeFormType = z.infer<typeof noticeFormSchema>;
 
-const NotificationModal = () => {
+const NotificationModal: React.FC = () => {
     const notificationModal = useNotificationModal();
-    const notice = useNotificationModal((state) => state.data);
+    const notice = useNotificationModal((state) => state.data) || {};
 
-    // if (!notice) {
-    //     return null;
-    // }
+    const [loading, setLoading] = useState(false);
+    const form = useForm<NoticeFormType>({
+        resolver: zodResolver(noticeFormSchema),
+        defaultValues: notice as NoticeFormType,
+    });
 
-    const [loading, setLoading] = useState<boolean>(false);
-    const form = useForm<NoticeFormValue>({
-        resolver: zodResolver(NoticeForm),
-        defaultValues: notice || {
-            id: "",
-            title: "",
-            context: "",
-            store_name: "",
-            createAt: "",
-            updateAt: "",
-        }
-    })
-    const onSubmit = async () => {
+    const onSubmit: SubmitHandler<NoticeFormType> = useCallback(async (data) => {
+        setLoading(true);
+        // Simulate an API call
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        setLoading(false);
+        notificationModal.onClose();
+    }, [notificationModal]);
 
+    const selectItems = useMemo(() => [
+        { value: "Còn hiệu lực", label: "Còn hiệu lực" },
+        { value: "Hết hiệu lực", label: "Hết hiệu lực" },
+    ], []);
+
+    if (!notice) {
+        return null;
     }
+
     return (
         <Modal open={notificationModal.isOpen} onClose={notificationModal.onClose}>
             <div className="w-full">
@@ -55,11 +59,8 @@ const NotificationModal = () => {
                 </div>
                 <Separator className="my-4" />
                 <Form {...form}>
-                    <form
-                        onSubmit={form.handleSubmit(onSubmit)}
-                        className="space-y-6 w-full"
-                        method="POST"
-                    >
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 w-full" method="POST">
+                        {/* Các FormField và xử lý tương tự */}
                         <FormField
                             control={form.control}
                             name="title"
@@ -136,15 +137,15 @@ const NotificationModal = () => {
                             )}
                         />
                         <div className="flex mx-20 gap-x-2">
-                            <Button variant={"success"} >Đặt vé</Button>
-                            <Button variant={"ghost"} type="button" onClick={() => notificationModal.onClose()}>Hủy</Button>
+                            <Button variant={"success"} type="submit" disabled={loading}>Đặt vé</Button>
+                            <Button variant={"ghost"} type="button" onClick={notificationModal.onClose} disabled={loading}>Hủy</Button>
                         </div>
                     </form>
                 </Form>
                 <Separator className="mt-2" />
             </div>
-        </Modal >
-    )
-}
+        </Modal>
+    );
+};
 
-export default NotificationModal
+export default NotificationModal;
